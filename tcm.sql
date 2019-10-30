@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 26-Out-2019 às 03:57
+-- Tempo de geração: 30-Out-2019 às 23:54
 -- Versão do servidor: 5.7.26-log
 -- versão do PHP: 7.1.12
 
@@ -33,6 +33,14 @@ CREATE TABLE `agenda` (
   `horario` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `agenda`
+--
+
+INSERT INTO `agenda` (`cod_agenda`, `horario`) VALUES
+(1, '2019-10-28 05:29:16'),
+(2, '2019-10-28 11:17:00');
+
 -- --------------------------------------------------------
 
 --
@@ -41,8 +49,18 @@ CREATE TABLE `agenda` (
 
 CREATE TABLE `carrinho` (
   `cod_carrinho` int(11) NOT NULL,
-  `cliente_carrinho` int(11) NOT NULL
+  `cliente_carrinho` int(11) NOT NULL,
+  `dta_pedido` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `carrinho`
+--
+
+INSERT INTO `carrinho` (`cod_carrinho`, `cliente_carrinho`, `dta_pedido`) VALUES
+(1, 3, '0000-00-00 00:00:00'),
+(2, 1, '0000-00-00 00:00:00'),
+(3, 2, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -63,6 +81,15 @@ CREATE TABLE `cliente` (
   `email` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `cliente`
+--
+
+INSERT INTO `cliente` (`cod_cliente`, `nome_cliente`, `sobrenome`, `cpf`, `senha`, `nivel`, `dta_nasc`, `dta_acesso`, `fotoUsuario`, `email`) VALUES
+(1, 'andre', 'silva', '06743611131', '1234', 1, '2019-10-09', '2019-10-30 08:25:15', 'imagem.png', 'andresilvay6@gmail.com'),
+(2, 'juliana', 'nascimento', '79634432244', '12345', 2, '2019-10-09', '2019-10-23 09:11:37', 'foto.png', 'juliana@gmail.com'),
+(3, 'alvaro', 'lima', '345345322266', '12345678', 1, '2019-10-09', '2019-10-17 10:44:21', 'fotografia.jpeg', 'alvarooliveira@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -76,6 +103,17 @@ CREATE TABLE `comentario` (
   `data_cometario` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `comentario`
+--
+
+INSERT INTO `comentario` (`cliente`, `cod_comentario`, `comentario`, `data_cometario`) VALUES
+(1, 1, 'o plano de lipo e otimo adoreiii', '2019-10-30 06:24:00'),
+(1, 2, 'otimo muito bom ', '2019-10-28 13:11:00'),
+(1, 3, 'gostei da limpeza me deixou otima', '2019-10-18 14:19:00'),
+(2, 4, 'parabens', '2019-10-11 00:00:00'),
+(3, 5, 'adorei otimo procedimento', '2019-10-24 11:14:29');
+
 -- --------------------------------------------------------
 
 --
@@ -85,8 +123,19 @@ CREATE TABLE `comentario` (
 CREATE TABLE `compra` (
   `cod_compra` int(11) NOT NULL,
   `carrinho` int(11) NOT NULL,
-  `data_compra` datetime NOT NULL
+  `data_compra` datetime NOT NULL,
+  `forma_pagamento` int(11) NOT NULL,
+  `valor_compra` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `compra`
+--
+
+INSERT INTO `compra` (`cod_compra`, `carrinho`, `data_compra`, `forma_pagamento`, `valor_compra`) VALUES
+(3, 1, '2019-10-16 08:12:31', 2, 1500),
+(4, 2, '2019-10-18 04:26:00', 1, 3800),
+(5, 1, '2019-10-09 10:14:00', 3, 50);
 
 -- --------------------------------------------------------
 
@@ -124,6 +173,15 @@ CREATE TABLE `endereco_cliente` (
   `cep` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `endereco_cliente`
+--
+
+INSERT INTO `endereco_cliente` (`cliente`, `cod_endereco`, `estado`, `cidade`, `logradouro`, `tipo_de_logradouro`, `numero`, `cep`) VALUES
+(1, 3, 'são paulo', 'São Paulo', 'monte alegre do sul', 'rua', 77, '02859080'),
+(2, 4, 'rio de janeiro', 'rio de janerio', 'monte azul', 'avenida', 1134, '06844780'),
+(3, 5, 'bahia', 'porto de galinhas', 'logo ali', 'travesa', 34, '45633000');
+
 -- --------------------------------------------------------
 
 --
@@ -140,6 +198,14 @@ CREATE TABLE `endereco_funcionario` (
   `numero` mediumint(9) NOT NULL,
   `cep` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `endereco_funcionario`
+--
+
+INSERT INTO `endereco_funcionario` (`funcionario`, `cod_endereco_funcionario`, `estado`, `cidade`, `logradouro`, `tipo_de_logradouro`, `numero`, `cep`) VALUES
+(1, 1, 'são paulo', 'São Paulo', 'mario peixoto', 'rua', 543, '45633000'),
+(2, 2, 'são paulo', 'são paulo', 'monte palado', 'avenida', 332, '06844780');
 
 -- --------------------------------------------------------
 
@@ -159,6 +225,14 @@ CREATE TABLE `funcionario` (
   `descricao_funcionario` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `funcionario`
+--
+
+INSERT INTO `funcionario` (`cod_funcionario`, `departamento`, `nome_funcionario`, `cargo`, `inicio_carga_horaria`, `final_carga_horaria`, `salario`, `email`, `descricao_funcionario`) VALUES
+(1, 1, 'jose', 'indefinido', '47:38:12', '60:17:41', '1500.00', 'jose@gmail.com', 'funcionario graduado'),
+(2, 1, 'cleber', 'limpar', '09:00:00', '18:15:08', '3000.00', 'cleber@gmail.com', 'funcionario com tres anos de esperiencia\r\n');
+
 -- --------------------------------------------------------
 
 --
@@ -172,6 +246,15 @@ CREATE TABLE `item_carrinho` (
   `qtd` mediumint(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `item_carrinho`
+--
+
+INSERT INTO `item_carrinho` (`cod_item`, `plano`, `carrinho`, `qtd`) VALUES
+(1, 6, 1, 1),
+(2, 7, 1, 2),
+(3, 7, 2, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -181,9 +264,16 @@ CREATE TABLE `item_carrinho` (
 CREATE TABLE `pagamento` (
   `cod_pagamento` int(11) NOT NULL,
   `compra` int(11) NOT NULL,
-  `tipo_pagamento` int(11) NOT NULL,
-  `situacao` varchar(20) NOT NULL
+  `situacao` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `pagamento`
+--
+
+INSERT INTO `pagamento` (`cod_pagamento`, `compra`, `situacao`) VALUES
+(1, 3, 'aguardando'),
+(2, 4, 'pago');
 
 -- --------------------------------------------------------
 
@@ -201,6 +291,14 @@ CREATE TABLE `plano` (
   `descricao` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `plano`
+--
+
+INSERT INTO `plano` (`cod_plano`, `agenda`, `funcionario`, `nome_plano`, `valor`, `promocao`, `descricao`) VALUES
+(6, 1, 1, 'limpeza', '479.00', '100.00', 'otimo plano'),
+(7, 2, 2, 'lipo', '10000.00', '1000.00', 'otimo para tirar gordura');
+
 -- --------------------------------------------------------
 
 --
@@ -208,9 +306,21 @@ CREATE TABLE `plano` (
 --
 
 CREATE TABLE `relacionamento_comentario_plano` (
+  `cod_comentario_plano` int(11) NOT NULL,
   `cod_plano_plano` int(11) NOT NULL,
   `cod_comentario_comentario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `relacionamento_comentario_plano`
+--
+
+INSERT INTO `relacionamento_comentario_plano` (`cod_comentario_plano`, `cod_plano_plano`, `cod_comentario_comentario`) VALUES
+(1, 7, 1),
+(2, 7, 2),
+(3, 6, 3),
+(4, 6, 4),
+(5, 6, 5);
 
 -- --------------------------------------------------------
 
@@ -225,6 +335,18 @@ CREATE TABLE `telefone_cliente` (
   `tipo_de_telefone` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `telefone_cliente`
+--
+
+INSERT INTO `telefone_cliente` (`cliente`, `cod_telefone`, `telefone`, `tipo_de_telefone`) VALUES
+(1, 1, '11950918423', 'celular'),
+(1, 2, '1139767145', 'telefone'),
+(2, 3, '1134567822', 'telefone'),
+(2, 4, '98679996956', 'celular'),
+(3, 5, '1139565434', 'telefone'),
+(3, 6, '11945363678', 'celular');
+
 -- --------------------------------------------------------
 
 --
@@ -238,16 +360,15 @@ CREATE TABLE `telefone_funcionario` (
   `tipo_de_telefone` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Estrutura da tabela `tipo_pagamento`
+-- Extraindo dados da tabela `telefone_funcionario`
 --
 
-CREATE TABLE `tipo_pagamento` (
-  `cod_tipo_pagamento` int(11) NOT NULL,
-  `forma_pagamento` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `telefone_funcionario` (`funcionario`, `cod_telefone_funcionario`, `telefone`, `tipo_de_telefone`) VALUES
+(1, 1, '11945362712', 'celular'),
+(1, 2, '1139767145', 'telefone'),
+(2, 3, '11987657690', 'celular'),
+(2, 4, '1123456789', 'telefone');
 
 --
 -- Índices para tabelas despejadas
@@ -263,7 +384,7 @@ ALTER TABLE `agenda`
 -- Índices para tabela `carrinho`
 --
 ALTER TABLE `carrinho`
-  ADD PRIMARY KEY (`cod_carrinho`,`cliente_carrinho`) USING BTREE,
+  ADD PRIMARY KEY (`cod_carrinho`) USING BTREE,
   ADD KEY `cliente_carrinho` (`cliente_carrinho`);
 
 --
@@ -276,15 +397,16 @@ ALTER TABLE `cliente`
 -- Índices para tabela `comentario`
 --
 ALTER TABLE `comentario`
-  ADD PRIMARY KEY (`cod_comentario`,`cliente`) USING BTREE,
+  ADD PRIMARY KEY (`cod_comentario`) USING BTREE,
   ADD KEY `cliente` (`cliente`);
 
 --
 -- Índices para tabela `compra`
 --
 ALTER TABLE `compra`
-  ADD PRIMARY KEY (`cod_compra`,`carrinho`) USING BTREE,
-  ADD KEY `carrinho` (`carrinho`) USING BTREE;
+  ADD PRIMARY KEY (`cod_compra`) USING BTREE,
+  ADD KEY `carrinho` (`carrinho`) USING BTREE,
+  ADD KEY `forma_pagamento` (`forma_pagamento`);
 
 --
 -- Índices para tabela `departamento`
@@ -327,22 +449,22 @@ ALTER TABLE `item_carrinho`
 -- Índices para tabela `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD PRIMARY KEY (`cod_pagamento`,`compra`) USING BTREE,
-  ADD KEY `compra` (`compra`),
-  ADD KEY `tipo_pagamento` (`tipo_pagamento`);
+  ADD PRIMARY KEY (`cod_pagamento`),
+  ADD KEY `compra` (`compra`);
 
 --
 -- Índices para tabela `plano`
 --
 ALTER TABLE `plano`
   ADD PRIMARY KEY (`cod_plano`,`agenda`) USING BTREE,
-  ADD KEY `agenda` (`agenda`);
+  ADD KEY `agenda` (`agenda`),
+  ADD KEY `funcionario` (`funcionario`);
 
 --
 -- Índices para tabela `relacionamento_comentario_plano`
 --
 ALTER TABLE `relacionamento_comentario_plano`
-  ADD PRIMARY KEY (`cod_plano_plano`,`cod_comentario_comentario`) USING BTREE,
+  ADD PRIMARY KEY (`cod_comentario_plano`) USING BTREE,
   ADD KEY `cod_plano_plano` (`cod_plano_plano`),
   ADD KEY `cod_comentario_comentario` (`cod_comentario_comentario`);
 
@@ -361,12 +483,6 @@ ALTER TABLE `telefone_funcionario`
   ADD KEY `funcionario` (`funcionario`);
 
 --
--- Índices para tabela `tipo_pagamento`
---
-ALTER TABLE `tipo_pagamento`
-  ADD PRIMARY KEY (`cod_tipo_pagamento`);
-
---
 -- AUTO_INCREMENT de tabelas despejadas
 --
 
@@ -374,31 +490,31 @@ ALTER TABLE `tipo_pagamento`
 -- AUTO_INCREMENT de tabela `agenda`
 --
 ALTER TABLE `agenda`
-  MODIFY `cod_agenda` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_agenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `carrinho`
 --
 ALTER TABLE `carrinho`
-  MODIFY `cod_carrinho` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_carrinho` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `cod_cliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `comentario`
 --
 ALTER TABLE `comentario`
-  MODIFY `cod_comentario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_comentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `cod_compra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `departamento`
@@ -410,55 +526,55 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de tabela `endereco_cliente`
 --
 ALTER TABLE `endereco_cliente`
-  MODIFY `cod_endereco` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_endereco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `endereco_funcionario`
 --
 ALTER TABLE `endereco_funcionario`
-  MODIFY `cod_endereco_funcionario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_endereco_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `cod_funcionario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `item_carrinho`
 --
 ALTER TABLE `item_carrinho`
-  MODIFY `cod_item` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `pagamento`
 --
 ALTER TABLE `pagamento`
-  MODIFY `cod_pagamento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_pagamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `plano`
 --
 ALTER TABLE `plano`
-  MODIFY `cod_plano` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_plano` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `relacionamento_comentario_plano`
+--
+ALTER TABLE `relacionamento_comentario_plano`
+  MODIFY `cod_comentario_plano` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `telefone_cliente`
 --
 ALTER TABLE `telefone_cliente`
-  MODIFY `cod_telefone` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_telefone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `telefone_funcionario`
 --
 ALTER TABLE `telefone_funcionario`
-  MODIFY `cod_telefone_funcionario` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `tipo_pagamento`
---
-ALTER TABLE `tipo_pagamento`
-  MODIFY `cod_tipo_pagamento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_telefone_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restrições para despejos de tabelas
@@ -480,7 +596,8 @@ ALTER TABLE `comentario`
 -- Limitadores para a tabela `compra`
 --
 ALTER TABLE `compra`
-  ADD CONSTRAINT `fk_compra_carrinho` FOREIGN KEY (`carrinho`) REFERENCES `carrinho` (`cod_carrinho`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_compra_carrinho` FOREIGN KEY (`carrinho`) REFERENCES `carrinho` (`cod_carrinho`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_compra_forma` FOREIGN KEY (`forma_pagamento`) REFERENCES `tipo_forma` (`cod_tipo_forma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `endereco_cliente`
@@ -511,14 +628,14 @@ ALTER TABLE `item_carrinho`
 -- Limitadores para a tabela `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD CONSTRAINT `fk_compra_pagamento` FOREIGN KEY (`compra`) REFERENCES `compra` (`cod_compra`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tipo_pagamento` FOREIGN KEY (`tipo_pagamento`) REFERENCES `tipo_pagamento` (`cod_tipo_pagamento`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_pagamento` FOREIGN KEY (`compra`) REFERENCES `compra` (`cod_compra`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `plano`
 --
 ALTER TABLE `plano`
-  ADD CONSTRAINT `fk_plano_agenda` FOREIGN KEY (`agenda`) REFERENCES `agenda` (`cod_agenda`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_plano_agenda` FOREIGN KEY (`agenda`) REFERENCES `agenda` (`cod_agenda`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_plano_funcionario` FOREIGN KEY (`funcionario`) REFERENCES `funcionario` (`cod_funcionario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `relacionamento_comentario_plano`
