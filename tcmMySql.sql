@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 30-Out-2019 às 23:54
+-- Tempo de geração: 09-Nov-2019 às 21:27
 -- Versão do servidor: 5.7.26-log
 -- versão do PHP: 7.1.12
 
@@ -49,18 +49,17 @@ INSERT INTO `agenda` (`cod_agenda`, `horario`) VALUES
 
 CREATE TABLE `carrinho` (
   `cod_carrinho` int(11) NOT NULL,
-  `cliente_carrinho` int(11) NOT NULL,
-  `dta_pedido` datetime NOT NULL
+  `cliente_carrinho` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `carrinho`
 --
 
-INSERT INTO `carrinho` (`cod_carrinho`, `cliente_carrinho`, `dta_pedido`) VALUES
-(1, 3, '0000-00-00 00:00:00'),
-(2, 1, '0000-00-00 00:00:00'),
-(3, 2, '0000-00-00 00:00:00');
+INSERT INTO `carrinho` (`cod_carrinho`, `cliente_carrinho`) VALUES
+(2, 1),
+(3, 2),
+(1, 3);
 
 -- --------------------------------------------------------
 
@@ -86,9 +85,12 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`cod_cliente`, `nome_cliente`, `sobrenome`, `cpf`, `senha`, `nivel`, `dta_nasc`, `dta_acesso`, `fotoUsuario`, `email`) VALUES
-(1, 'andre', 'silva', '06743611131', '1234', 1, '2019-10-09', '2019-10-30 08:25:15', 'imagem.png', 'andresilvay6@gmail.com'),
+(1, 'andrezin', 'silva', '06743611131', '1234', 1, '2019-10-09', '2019-10-30 08:25:15', 'imagem.png', 'andresilvay6@gmail.com'),
 (2, 'juliana', 'nascimento', '79634432244', '12345', 2, '2019-10-09', '2019-10-23 09:11:37', 'foto.png', 'juliana@gmail.com'),
-(3, 'alvaro', 'lima', '345345322266', '12345678', 1, '2019-10-09', '2019-10-17 10:44:21', 'fotografia.jpeg', 'alvarooliveira@gmail.com');
+(3, 'alvaro', 'lima', '345345322266', '12345678', 1, '2019-10-09', '2019-10-17 10:44:21', 'fotografia.jpeg', 'alvarooliveira@gmail.com'),
+(4, 'pedro', 'viera', '45632611166', '123455', 2, '2019-10-09', '2019-10-25 13:54:29', 'imagemn.jpg', 'pedro@gmail.com'),
+(5, 'ana', 'ferreira', '44466677798', '676688', 2, '2019-10-18', '2019-10-30 21:55:47', 'iihhgambne.png', 'ana@gmail.com'),
+(6, 'laura', 'prado', '22211109789', '09876', 2, '2019-10-02', '2019-10-30 16:29:19', 'laura@gmail.com', 'laura@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -306,21 +308,9 @@ INSERT INTO `plano` (`cod_plano`, `agenda`, `funcionario`, `nome_plano`, `valor`
 --
 
 CREATE TABLE `relacionamento_comentario_plano` (
-  `cod_comentario_plano` int(11) NOT NULL,
   `cod_plano_plano` int(11) NOT NULL,
   `cod_comentario_comentario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `relacionamento_comentario_plano`
---
-
-INSERT INTO `relacionamento_comentario_plano` (`cod_comentario_plano`, `cod_plano_plano`, `cod_comentario_comentario`) VALUES
-(1, 7, 1),
-(2, 7, 2),
-(3, 6, 3),
-(4, 6, 4),
-(5, 6, 5);
 
 -- --------------------------------------------------------
 
@@ -369,6 +359,26 @@ INSERT INTO `telefone_funcionario` (`funcionario`, `cod_telefone_funcionario`, `
 (1, 2, '1139767145', 'telefone'),
 (2, 3, '11987657690', 'celular'),
 (2, 4, '1123456789', 'telefone');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tipo_forma`
+--
+
+CREATE TABLE `tipo_forma` (
+  `cod_tipo_forma` int(11) NOT NULL,
+  `forma_pagamento` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tipo_forma`
+--
+
+INSERT INTO `tipo_forma` (`cod_tipo_forma`, `forma_pagamento`) VALUES
+(1, 'boleto'),
+(2, 'cartao'),
+(3, 'tranferencia');
 
 --
 -- Índices para tabelas despejadas
@@ -464,7 +474,7 @@ ALTER TABLE `plano`
 -- Índices para tabela `relacionamento_comentario_plano`
 --
 ALTER TABLE `relacionamento_comentario_plano`
-  ADD PRIMARY KEY (`cod_comentario_plano`) USING BTREE,
+  ADD PRIMARY KEY (`cod_plano_plano`,`cod_comentario_comentario`) USING BTREE,
   ADD KEY `cod_plano_plano` (`cod_plano_plano`),
   ADD KEY `cod_comentario_comentario` (`cod_comentario_comentario`);
 
@@ -481,6 +491,12 @@ ALTER TABLE `telefone_cliente`
 ALTER TABLE `telefone_funcionario`
   ADD PRIMARY KEY (`cod_telefone_funcionario`,`funcionario`) USING BTREE,
   ADD KEY `funcionario` (`funcionario`);
+
+--
+-- Índices para tabela `tipo_forma`
+--
+ALTER TABLE `tipo_forma`
+  ADD PRIMARY KEY (`cod_tipo_forma`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
@@ -502,7 +518,7 @@ ALTER TABLE `carrinho`
 -- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `cod_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `cod_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `comentario`
@@ -559,12 +575,6 @@ ALTER TABLE `plano`
   MODIFY `cod_plano` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT de tabela `relacionamento_comentario_plano`
---
-ALTER TABLE `relacionamento_comentario_plano`
-  MODIFY `cod_comentario_plano` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT de tabela `telefone_cliente`
 --
 ALTER TABLE `telefone_cliente`
@@ -575,6 +585,12 @@ ALTER TABLE `telefone_cliente`
 --
 ALTER TABLE `telefone_funcionario`
   MODIFY `cod_telefone_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de tabela `tipo_forma`
+--
+ALTER TABLE `tipo_forma`
+  MODIFY `cod_tipo_forma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para despejos de tabelas
